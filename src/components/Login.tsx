@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 
-// Schema de validación con Zod
 const loginSchema = z.object({
   email: z.string().min(1, "Este campo es obligatorio").email("Correo inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
@@ -48,7 +47,7 @@ export function Login() {
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
-              Correo Electrónico
+              Correo
             </label>
             <Input
               type="email"
@@ -83,10 +82,10 @@ export function Login() {
             </Button>
           </DialogFooter>
           <div className="text-sm text-center">
-            ¿No tienes una cuenta?{" "}
+            Primera vez?
             <Link
               to="/register"
-              className="text-indigo-600 hover:text-indigo-800"
+              className="text-indigo-600 hover:text-indigo-800 mx-1"
             >
               Regístrate
             </Link>
