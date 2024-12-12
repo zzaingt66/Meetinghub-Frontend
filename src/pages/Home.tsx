@@ -6,8 +6,10 @@ export function Home() {
   return (
     <>
       <Navbar />
-      <SearchBar />
-      <CardList />
+      <div className="container mx-auto">
+        <SearchBar />
+        <CardList />
+      </div>
     </>
   );
 }

@@ -5,7 +5,7 @@ export const useRooms = () => {
   return useQuery({    
     queryKey:['rooms'], 
     queryFn:async () => {
-    const { data } = await axios.get('http://localhost:8800/api/rooms');
+    const { data } = await axios.get('https://meetinghub-backend.onrender.com/api/rooms');
     return data;
   }}
 );

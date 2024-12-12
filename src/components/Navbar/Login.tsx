@@ -30,7 +30,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const loginUser = async (credentials: LoginFormValues) => {
-  const { data } = await axios.post("http://localhost:8800/api/auth/login", credentials);
+  const { data } = await axios.post("https://meetinghub-backend.onrender.com/api/auth/login", credentials);
   return data;
 };
 

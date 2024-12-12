@@ -18,7 +18,7 @@ interface Room {
 }
 
 const getRooms = async (): Promise<Room[]> => {
-  const { data } = await axios.get("http://localhost:8800/api/rooms");
+  const { data } = await axios.get("https://meetinghub-backend.onrender.com/api/rooms");
   return data;
 };
 
@@ -41,7 +41,6 @@ export function CardList() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Room Reservations</h1>
       {rooms && rooms.length === 0 ? (
         <div className="text-center text-gray-500">No rooms available</div>
       ) : (

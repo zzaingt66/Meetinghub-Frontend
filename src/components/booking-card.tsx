@@ -13,9 +13,9 @@ import {
 import { useEffect, useState } from "react";
 import { CalendarDays } from "lucide-react";
 
-const HOUR_RATE = 150000; // 150,000 COP per hour
-const CLEANING_FEE = 50000; // 50,000 COP
-const SERVICE_FEE_RATE = 0.1; // 10% service fee
+const HOUR_RATE = 150000; 
+const CLEANING_FEE = 50000; 
+const SERVICE_FEE_RATE = 0.1;
 
 export function BookingCard({ bookingDetails, onBookingChange }) {
   const [totalHours, setTotalHours] = useState(0);
