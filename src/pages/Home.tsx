@@ -1,12 +1,12 @@
-import { Header } from "@/components/Header";
+import { Navbar } from "@/components/Navbar";
 import { CardList } from "@/components/RoomList";
 import { SearchBar } from "@/components/SearchBar";
 
 export function Home() {
   return (
     <>
-      <Header />
-      <SearchBar/>
+      <Navbar />
+      <SearchBar />
       <CardList />
     </>
   );

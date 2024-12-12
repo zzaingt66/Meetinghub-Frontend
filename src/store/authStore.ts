@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-// Interface for user data
 interface User {
   id: string;
   name: string;
@@ -37,8 +36,8 @@ export const useAuthStore = create<AuthState>()(
       })
     }),
     {
-      name: 'auth-storage', // name of the item in storage
-      storage: createJSONStorage(() => localStorage), // use localStorage
+      name: 'auth-storage',
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,
         token: state.token,
