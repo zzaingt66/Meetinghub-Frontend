@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "/components/ui/avatar";
-import { Button } from "/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
@@ -8,17 +8,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "/components/ui/card";
-import { Input } from "/components/ui/input";
-import { Label } from "/components/ui/label";
+} from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "/components/ui/select";
-import { Textarea } from "/components/ui/textarea";
+} from "./ui/select";
+import { Textarea } from "./ui/textarea";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState({
@@ -54,7 +54,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="bg-gray-100 p-4 md:p-6 lg:p-8">
+    <div className="p-4 md:p-6 lg:p-8">
       <Card>
         <CardHeader>
           <CardTitle>Perfil de usuario</CardTitle>
@@ -118,7 +118,7 @@ const ProfilePage = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <Button variant="primary" type="submit">
+              <Button variant="ghost" type="submit">
                 Actualizar
               </Button>
             </form>
