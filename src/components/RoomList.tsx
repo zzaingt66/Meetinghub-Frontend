@@ -31,7 +31,7 @@ export function CardList() {
     queryKey: ["rooms"],
     queryFn: getRooms,
   });
-
+  console.log(rooms)
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
 
   if (error)

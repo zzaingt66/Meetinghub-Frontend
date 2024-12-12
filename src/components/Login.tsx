@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,7 +15,9 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useLogin } from "@/Hooks/useLogin";
+import { Loader2 } from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+
 
 const loginSchema = z.object({
   email: z
@@ -23,8 +29,53 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+const loginUser = async (credentials: LoginFormValues) => {
+  const { data } = await axios.post("http://localhost:8800/api/auth/login", credentials);
+  return data;
+};
+
 export function Login() {
-  const loginMutation = useLogin();
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { login } = useAuthStore();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      console.log(data)
+      login({
+        id: data._id,
+        name: data.name,
+        email: data.email
+      }, data.token);
+
+      toast.success("Inicio de sesión exitoso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      // Cerrar diálogo
+      setIsDialogOpen(false);
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.message 
+        || "Ocurrió un error al iniciar sesión";
+      setLoginError(errorMessage);
+
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  });
 
   const {
     register,
@@ -34,9 +85,14 @@ export function Login() {
     resolver: zodResolver(loginSchema),
   });
 
+  const onSubmit = (data: LoginFormValues) => {
+    setLoginError(null);
+    
+    mutate(data);
+  };
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button className="bg-indigo-600 hover:bg-green-700 text-white">
           Iniciar Sesión
@@ -46,7 +102,8 @@ export function Login() {
         <DialogHeader>
           <DialogTitle className="text-center">Iniciar Sesión</DialogTitle>
         </DialogHeader>
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               Correo
@@ -61,6 +118,7 @@ export function Login() {
               <p className="text-sm text-red-500">{errors.email.message}</p>
             )}
           </div>
+          
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               Contraseña
@@ -75,22 +133,29 @@ export function Login() {
               <p className="text-sm text-red-500">{errors.password.message}</p>
             )}
           </div>
+
+          {loginError && (
+            <div className="text-sm text-red-500 text-center">
+              {loginError}
+            </div>
+          )}
+          
           <DialogFooter>
             <Button
               type="submit"
               className="w-full bg-indigo-600 hover:bg-indigo-700"
-              disabled={loginMutation.isLoading}
+              disabled={isPending}
             >
-              {loginMutation.isLoading ? "Cargando..." : "Iniciar Sesión"}
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Iniciando Sesión
+                </>
+              ) : (
+                "Iniciar Sesión"
+              )}
             </Button>
           </DialogFooter>
-          {loginMutation.isError && (
-            <p className="text-sm text-red-500 text-center mt-2">
-              {loginMutation.error instanceof Error
-                ? loginMutation.error.message
-                : "Error de inicio de sesión"}
-            </p>
-          )}
         </form>
       </DialogContent>
     </Dialog>
