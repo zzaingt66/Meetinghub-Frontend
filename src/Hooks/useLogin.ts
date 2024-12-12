@@ -1,26 +1,44 @@
-import { useMutation } from "@tanstack/react-query";
-import { login } from "../API/api";
-import { useAuthStore } from "./authStore";
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  user: {
+    id: string;
+    email: string;
+    name?: string;
+  };
+  token: string;
+}
+
+const loginUser = async (credentials: LoginCredentials): Promise<LoginResponse> => {
+  const { data } = await axios.post('/api/auth/login', credentials);
+  return data;
+};
 
 export const useLogin = () => {
-  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
-  const setUser = useAuthStore((state) => state.setUser);
+  const navigate = useNavigate();
+  const { login } = useAuthStore();
 
-  return useMutation(
-    async (credentials: { email: string; password: string }) => {
-      const data = await login(credentials);
-      return data;
+  return useMutation(loginUser, {
+    onSuccess: (data) => {
+      login({
+        user: data.user,
+        token: data.token
+      });
+
+      axios.defaults.headers.common['Authorization'] = `Token ${data.token}`;
+
+      navigate('/dashboard');
     },
-    {
-      onSuccess: (data) => {
-        localStorage.setItem("token", data.token);
-        setAuthenticated(true);
-        setUser({ name: data.user.name });
-      },
-      onError: () => {
-        setAuthenticated(false);
-        setUser(null);
-      },
+    onError: (error: any) => {
+      console.error('Error de login:', error);
     }
-  );
+  });
 };

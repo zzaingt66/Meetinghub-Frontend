@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Heart } from 'lucide-react';
-import { Badge } from "./ui/badge";
 
 interface RoomCardProps {
   id: string;
