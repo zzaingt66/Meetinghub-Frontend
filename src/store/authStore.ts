@@ -64,3 +64,4 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+console.log("Token al inicializar:", useAuthStore.getState().token);

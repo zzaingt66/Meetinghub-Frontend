@@ -63,7 +63,7 @@ type BookingFormValues = z.infer<typeof bookingSchema>;
 export function BookingForm() {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
-  const { user, token } = useAuthStore();
+  const { user } = useAuthStore();
 
   const {
     register,
@@ -77,23 +77,20 @@ export function BookingForm() {
       numberOfPeople: 1,
     },
   });
-
   const createBooking = useMutation({
     mutationFn: async (bookingData: BookingFormValues) => {
-      console.log("Booking Mutation Details:", {
-        user,
-        token,
-        roomId,
-        bookingData,
-      });
+      const { token } = useAuthStore.getState();
+      if (!token) {
+        throw new Error("El token no está disponible");
+      }
       const response = await axios.post(
         `https://meetinghub-backend.onrender.com/api/reservations/`,
         {
           roomId,
           userId: user?.id,
           date: bookingData.date,
-          startTime: bookingData.startTime,
-          endTime: bookingData.endTime,
+          startHour: bookingData.startTime,
+          endHour: bookingData.endTime,
           numberOfPeople: bookingData.numberOfPeople,
         },
         {

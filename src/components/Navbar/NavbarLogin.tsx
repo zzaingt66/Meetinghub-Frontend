@@ -45,12 +45,11 @@ export function NavbarLogin() {
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data);
       login(
         {
-          id: data._id,
-          name: data.name,
-          email: data.email,
+          id: data.user._id,
+          name: data.user.name,
+          email: data.user.email,
         },
         data.token
       );
@@ -64,7 +63,6 @@ export function NavbarLogin() {
         draggable: true,
       });
 
-      // Cerrar diálogo
       setIsDialogOpen(false);
     },
     onError: (error: any) => {

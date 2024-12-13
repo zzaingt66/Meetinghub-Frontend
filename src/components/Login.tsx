@@ -22,11 +22,20 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const loginUser = async (credentials: LoginFormValues) => {
-  const { data } = await axios.post(
-    "https://meetinghub-backend.onrender.com/api/auth/login",
-    credentials
-  );
-  return data;
+  try {
+    const { data } = await axios.post(
+      "https://meetinghub-backend.onrender.com/api/auth/login",
+      credentials
+    );
+    if (!data.token) {
+      throw new Error("No se recibió un token de autenticación");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Login error:", error);
+    throw error;
+  }
 };
 
 export function Login() {
@@ -37,6 +46,7 @@ export function Login() {
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
+      console.log("Login Response Data:", data);
       login(
         {
           id: data._id,
@@ -82,7 +92,6 @@ export function Login() {
 
   const onSubmit = (data: LoginFormValues) => {
     setLoginError(null);
-
     mutate(data);
   };
 
