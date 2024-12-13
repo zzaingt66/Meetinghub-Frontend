@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/store/authStore";
-import { Login } from "./Navbar/Login";
+import { NavbarLogin } from "./Navbar/NavbarLogin";
 import { UserDropdown } from "./UserDropdwn";
 import Logo from "@/assets/Logo";
 import { ModeToggle } from "./Navbar/mode-toggle";
@@ -10,10 +10,10 @@ export function Navbar() {
   return (
     <nav className="flex justify-between">
       <div className="flex justify-start">
-      <Logo />
-      <ModeToggle />
+        <Logo />
+        <ModeToggle />
       </div>
-      {isAuthenticated ? <UserDropdown /> : <Login />}
+      {isAuthenticated ? <UserDropdown /> : <NavbarLogin />}
     </nav>
   );
 }

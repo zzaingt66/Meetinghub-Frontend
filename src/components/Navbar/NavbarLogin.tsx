@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
-
+import { Link } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z
@@ -30,11 +30,14 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const loginUser = async (credentials: LoginFormValues) => {
-  const { data } = await axios.post("https://meetinghub-backend.onrender.com/api/auth/login", credentials);
+  const { data } = await axios.post(
+    "https://meetinghub-backend.onrender.com/api/auth/login",
+    credentials
+  );
   return data;
 };
 
-export function Login() {
+export function NavbarLogin() {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { login } = useAuthStore();
@@ -42,12 +45,15 @@ export function Login() {
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data)
-      login({
-        id: data._id,
-        name: data.name,
-        email: data.email
-      }, data.token);
+      console.log(data);
+      login(
+        {
+          id: data._id,
+          name: data.name,
+          email: data.email,
+        },
+        data.token
+      );
 
       toast.success("Inicio de sesión exitoso", {
         position: "top-right",
@@ -62,8 +68,8 @@ export function Login() {
       setIsDialogOpen(false);
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message 
-        || "Ocurrió un error al iniciar sesión";
+      const errorMessage =
+        error.response?.data?.message || "Ocurrió un error al iniciar sesión";
       setLoginError(errorMessage);
 
       toast.error(errorMessage, {
@@ -74,7 +80,7 @@ export function Login() {
         pauseOnHover: true,
         draggable: true,
       });
-    }
+    },
   });
 
   const {
@@ -87,7 +93,7 @@ export function Login() {
 
   const onSubmit = (data: LoginFormValues) => {
     setLoginError(null);
-    
+
     mutate(data);
   };
 
@@ -102,7 +108,7 @@ export function Login() {
         <DialogHeader>
           <DialogTitle className="text-center">Iniciar Sesión</DialogTitle>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
@@ -118,7 +124,7 @@ export function Login() {
               <p className="text-sm text-red-500">{errors.email.message}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               Contraseña
@@ -135,26 +141,29 @@ export function Login() {
           </div>
 
           {loginError && (
-            <div className="text-sm text-red-500 text-center">
-              {loginError}
-            </div>
+            <div className="text-sm text-red-500 text-center">{loginError}</div>
           )}
-          
+
           <DialogFooter>
-            <Button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700"
-              disabled={isPending}
-            >
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Iniciando Sesión
-                </>
-              ) : (
-                "Iniciar Sesión"
-              )}
-            </Button>
+            <div className="mx-auto text-center">
+              <Button
+                type="submit"
+                className="w-full bg-indigo-600 hover:bg-indigo-700"
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Iniciando Sesión
+                  </>
+                ) : (
+                  "Iniciar Sesión"
+                )}
+              </Button>
+              <Link to={"/register"}>
+                <span>Primrera vez?</span>
+              </Link>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>
