@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,37 +6,40 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useAuthStore } from "@/store/authStore"
-import { LogOut, Settings, User } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { useAuthStore } from "@/store/authStore";
+import { LogOut, User } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 export function UserDropdown() {
-  const { user, logout } = useAuthStore()
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate(); // Hook para redirección
 
   const handleLogout = () => {
-    logout()
-    // Opcional: redirigir a home o login
-  }
+    logout();
+    navigate("/");
+  };
 
   // Función para obtener iniciales del usuario
   const getInitials = (name: string) => {
-    if (!name) return "US"
-    const names = name.split(' ')
-    const initials = names.map(n => n[0]).join('').toUpperCase()
-    return initials.slice(0, 2)
-  }
+    if (!name) return "US";
+    const names = name.split(" ");
+    const initials = names
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+    return initials.slice(0, 2);
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage 
-            src={user?.avatar || undefined} 
-            alt={`Foto de perfil de ${user?.name}`} 
+          <AvatarImage
+            src={user?.avatar || undefined}
+            alt={`Foto de perfil de ${user?.name}`}
           />
-          <AvatarFallback>
-            {getInitials(user?.name || "")}
-          </AvatarFallback>
+          <AvatarFallback>{getInitials(user?.name || "")}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -49,16 +52,14 @@ export function UserDropdown() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => navigate("/profile")} // Redirige al perfil
+        >
           <User className="mr-2 h-4 w-4" />
           <span>Perfil</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Configuración</span>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem 
+        <DropdownMenuItem
           className="text-red-500 focus:text-red-500 cursor-pointer"
           onSelect={handleLogout}
         >
@@ -67,5 +68,5 @@ export function UserDropdown() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

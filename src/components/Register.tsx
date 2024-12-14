@@ -50,7 +50,7 @@ export function RegisterForm() {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    mode: "onBlur", // Validate on field blur
+    mode: "onBlur",
   });
 
   // Mutación de React Query para registrar al usuario

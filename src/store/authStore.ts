@@ -15,6 +15,7 @@ interface AuthState {
   login: (userData: User, token: string) => void;
   register: (userData: User, token: string) => void;
   logout: () => void;
+  getToken: () => string | null; // Add this method to the interface
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -52,6 +53,9 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
         });
       },
+
+      // Add getToken method inside the store configuration
+      getToken: () => get().token,
     }),
     {
       name: "auth-storage",
@@ -64,4 +68,5 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+
 console.log("Token al inicializar:", useAuthStore.getState().token);

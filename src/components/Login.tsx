@@ -24,7 +24,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const loginUser = async (credentials: LoginFormValues) => {
   try {
     const { data } = await axios.post(
-      "https://meetinghub-backend.onrender.com/api/auth/login",
+      "https://localhost:8800/api/auth/login",
       credentials
     );
     if (!data.token) {
@@ -101,7 +101,9 @@ export function Login() {
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Correo</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Correo
+          </label>
           <Input
             type="email"
             placeholder="ejemplo@correo.com"
@@ -114,7 +116,9 @@ export function Login() {
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Contraseña</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Contraseña
+          </label>
           <Input
             type="password"
             placeholder="••••••••"
@@ -127,7 +131,9 @@ export function Login() {
         </div>
 
         {loginError && (
-          <div className="text-sm text-red-500 text-center mb-4">{loginError}</div>
+          <div className="text-sm text-red-500 text-center mb-4">
+            {loginError}
+          </div>
         )}
 
         <div className="mx-auto text-center">

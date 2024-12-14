@@ -79,10 +79,12 @@ export function BookingForm() {
   });
   const createBooking = useMutation({
     mutationFn: async (bookingData: BookingFormValues) => {
-      const { token } = useAuthStore.getState();
+      const token = useAuthStore.getState().getToken();
+
       if (!token) {
         throw new Error("El token no está disponible");
       }
+
       const response = await axios.post(
         `https://meetinghub-backend.onrender.com/api/reservations/`,
         {
@@ -96,6 +98,7 @@ export function BookingForm() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );

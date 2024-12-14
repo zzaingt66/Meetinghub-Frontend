@@ -91,59 +91,62 @@ export function NavbarLogin() {
 
   const onSubmit = (data: LoginFormValues) => {
     setLoginError(null);
-
     mutate(data);
   };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-indigo-600 hover:bg-green-700 text-white">
+        <Button className="hover:bg-orange-500 text-white">
           Iniciar Sesión
         </Button>
       </DialogTrigger>
       <DialogContent className="h-5/6">
         <DialogHeader>
-          <DialogTitle className="text-center">Iniciar Sesión</DialogTitle>
+          <DialogTitle className="text-center my-auto">
+            Iniciar Sesión
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6 w-10/12 mx-auto"
+        >
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-xs font-medium text-gray-700">
               Correo
             </label>
             <Input
               type="email"
-              placeholder="ejemplo@correo.com"
-              className="w-full"
+              placeholder="Cantera@gmail.com"
+              className="w-full text-sm"
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-xs text-red-500">{errors.email.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-xs font-medium text-gray-700">
               Contraseña
             </label>
             <Input
               type="password"
-              placeholder="••••••••"
-              className="w-full"
+              className="w-full text-sm"
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-red-500">{errors.password.message}</p>
             )}
           </div>
 
           {loginError && (
-            <div className="text-sm text-red-500 text-center">{loginError}</div>
+            <div className="text-xs text-red-500 text-center">{loginError}</div>
           )}
 
           <DialogFooter>
-            <div className="mx-auto text-center">
+            <div className="mx-auto text-center space-y-4">
               <Button
                 type="submit"
                 className="w-full bg-indigo-600 hover:bg-indigo-700"
@@ -158,8 +161,12 @@ export function NavbarLogin() {
                   "Iniciar Sesión"
                 )}
               </Button>
-              <Link to={"/register"}>
-                <span>Primrera vez?</span>
+              <Link
+                to={"/register"}
+                onClick={() => setIsDialogOpen(false)}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Primera vez?
               </Link>
             </div>
           </DialogFooter>

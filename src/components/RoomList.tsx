@@ -18,7 +18,9 @@ interface Room {
 }
 
 const getRooms = async (): Promise<Room[]> => {
-  const { data } = await axios.get("https://meetinghub-backend.onrender.com/api/rooms");
+  const { data } = await axios.get(
+    "https://meetinghub-backend.onrender.com/api/rooms"
+  );
   return data;
 };
 
@@ -31,7 +33,6 @@ export function CardList() {
     queryKey: ["rooms"],
     queryFn: getRooms,
   });
-  console.log(rooms)
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
 
   if (error)
@@ -40,7 +41,7 @@ export function CardList() {
     );
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       {rooms && rooms.length === 0 ? (
         <div className="text-center text-gray-500">No rooms available</div>
       ) : (
